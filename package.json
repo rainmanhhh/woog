@@ -1,5 +1,5 @@
 {
-  "name": "geno",
+  "name": "woog",
   "version": "0.0.1",
   "description": "simple wrapper of @openapitools/openapi-generator-cli, with some default configurations",
   "publishConfig": {
@@ -22,7 +22,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "bin": {
-    "geno": "dist/index.js"
+    "woog": "dist/index.js"
   },
   "license": "MIT",
   "devDependencies": {

@@ -1,25 +1,25 @@
 
-# geno
+# woog
 
 simple wrapper of @openapitools/openapi-generator-cli, with some default configurations.
-geno means Generator of Openapi
+woog means Wrapper Of Openapi Generator 
 
 ## Install
 
 ```bash
-npm i -g @openapitools/openapi-generator-cli geno
+npm i -g @openapitools/openapi-generator-cli woog
 ```
 
 ## Usage
 ```bash
-geno <generatorDirName> [inputFileName=openapi] [outputDirName=out]
+woog <generatorDirName> [inputFileName=openapi] [outputDirName=out]
 ```
 example:
 ```bash
-geno openapi
+woog openapi
 ```
 ```bash
-geno html2 openapi.json out.html2
+woog html2 openapi.json out.html2
 ```
 
 ## Config

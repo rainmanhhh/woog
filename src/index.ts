@@ -4,7 +4,7 @@ import {main} from './main'
 
 const generatorDir = process.argv[2]
 if (!generatorDir) {
-  console.log('usage: geno <generatorDirName> [inputFileName=openapi] [outputDirName=out]')
+  console.log('usage: woog <generatorDirName> [inputFileName=openapi] [outputDirName=out]')
   process.exit(1)
 }
 main(
