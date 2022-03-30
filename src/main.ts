@@ -42,33 +42,31 @@ function tryReadJson(path: string) {
 }
 
 function readConfig(generatorDirPath: string, fileName: string): {configFile?: string, configObj?: Record<string, any>} {
-  let configFile: string | undefined = generatorDirPath + '/' + fileName + '.yaml'
-  let configObj = tryReadYaml(configFile)
-  if (configObj === undefined) {
-    configFile = generatorDirPath + '/' + fileName + '.yml'
+  let configFile: string | undefined = generatorDirPath + '/' + fileName
+  let configObj: object | undefined
+  if (configFile.endsWith('.yaml') || configFile.endsWith('.yml')) {
     configObj = tryReadYaml(configFile)
-  }
-  if (configObj === undefined) {
-    configFile = generatorDirPath + '/' + fileName + '.json'
+  } else if (configFile.endsWith('.json')) {
     configObj = tryReadJson(configFile)
+  } else {
+    configFile = generatorDirPath + '/' + fileName + '.yaml'
+    configObj = tryReadYaml(configFile)
+    if (configObj === undefined) {
+      configFile = generatorDirPath + '/' + fileName + '.yml'
+      configObj = tryReadYaml(configFile)
+    }
+    if (configObj === undefined) {
+      configFile = generatorDirPath + '/' + fileName + '.json'
+      configObj = tryReadJson(configFile)
+    }
   }
-  if (configObj === undefined) configFile = undefined
   return {configFile, configObj}
 }
 
-async function doGenerate(generatorDirName: string, outDir: string, originInput = 'openapi') {
-  // let input = originInput
+async function doGenerate(generatorDirName: string, outDir: string, originInput: string) {
   const inputConfig = readConfig(cwd, originInput)
   if (inputConfig.configObj === undefined)
     throw new TypeError(`input file ${originInput}.(yaml|yml|json) not found`)
-  // if (!input.endsWith('.yaml') && !input.endsWith('.yml') && !input.endsWith('.json')) {
-  //   input = originInput + '.yaml'
-  //   if (!fs.existsSync(input)) input = originInput + '.yml'
-  //   if (!fs.existsSync(input)) input = originInput + '.json'
-  //   if (!fs.existsSync(input)) throw new TypeError(`input file ${originInput}.(yaml|yml|json) not found`)
-  // } else {
-  //   if (!fs.existsSync(input)) throw new TypeError(`input file ${input} not found`)
-  // }
   console.log('inputFile: %s', inputConfig.configFile)
   if (!fs.existsSync(generatorDirName)) fs.mkdirSync(generatorDirName)
   const generatorDirPath = `${cwd}/${generatorDirName}`
