@@ -1,6 +1,6 @@
 {
   "name": "woog",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "simple wrapper of @openapitools/openapi-generator-cli, with some default configurations",
   "publishConfig": {
     "access": "public"

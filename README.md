@@ -39,7 +39,12 @@ you can put optional extra parameters in the config file:
 
     * `true` means use `OPENAPI_TEMPLATE_ROOT`/`generatorName` as template dir
     * string value means use `OPENAPI_TEMPLATE_ROOT`/`<x-template value>` as template dir
-
+    * some generators have special template dir name(different from generator name). 
+      these generators' template dir will be auto mapped if `x-template` have been set to `true`. for example: 
+      1. `html2` -> `htmlDocs2`
+      2. `spring` -> `JavaSpring`
+      3. `jaxrs-cxf` -> `JavaJaxRS`
+      4. `jaxrs-cxf-cdi` -> `JavaJaxRS`
 ## Note
 - use `openapi-generator-cli version-manager` to switch openapi-generator-cli version
 - use `openapi-generator-cli list` to get available generator names

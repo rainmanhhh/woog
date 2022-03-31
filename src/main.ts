@@ -3,19 +3,9 @@ import * as fs from 'fs'
 import rimraf from 'rimraf'
 import mvn from './mvn'
 import {runCmd} from './runCmd'
+import {templateMap} from './templateMap'
 
 const cwd = process.cwd()
-
-/**
- * key - generator name(openapi cli -g param);
- * value - template dir name(child of openapi-generator/modules/openapi-generator/src/main/resources)
- */
-const templateMap: Record<string, string> = {
-  html2: 'htmlDocs2',
-  spring: 'JavaSpring',
-  'jaxrs-cxf': 'JavaJaxRS',
-  'jaxrs-cxf-cdi': 'JavaJaxRS',
-}
 
 function doClear(outDir: string) {
   return new Promise((resolve, reject) => rimraf(`${outDir}/*`, r => {
@@ -110,6 +100,7 @@ async function doPackage(generator: string, outDir: string) {
 async function doInstall(generator: string, outDir: string) {
   switch (generator) {
     case 'java':
+    case 'jaxrs-cxf-client':
     case 'spring':
     case 'kotlin-spring':
       const targetDir = `${outDir}/target`
