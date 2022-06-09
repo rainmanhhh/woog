@@ -17,10 +17,10 @@ export const fileUtil = {
     else return JSON.parse(s)
   },
   readConfig(generatorDirPath: string, fileName: string): {
-    configFile?: string
+    configFile: string
     configObj?: Record<string, any>
   } {
-    let configFile: string | undefined = generatorDirPath + '/' + fileName
+    let configFile: string = generatorDirPath + '/' + fileName
     let configObj: object | undefined
     if (configFile.endsWith('.yaml') || configFile.endsWith('.yml')) {
       configObj = fileUtil.readYaml(configFile)
@@ -39,5 +39,12 @@ export const fileUtil = {
       }
     }
     return {configFile, configObj}
+  },
+  writeConfig(filePath: string, configObj: Record<string, any>) {
+    if (filePath.endsWith('.yml') || filePath.endsWith('.yaml')) {
+      fs.writeFileSync(filePath, yaml.stringify(configObj))
+    } else if (filePath.endsWith('.json')) {
+      fs.writeFileSync(filePath, JSON.stringify(configObj))
+    } else throw new TypeError(`invalid config file path: ${filePath}`)
   }
 }

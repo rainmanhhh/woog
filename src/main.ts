@@ -4,6 +4,8 @@ import mvn from './mvn'
 import {runCmd} from './runCmd'
 import {templateMap} from './templateMap'
 import {fileUtil} from './fileUtil'
+import {OpenAPIObject} from 'openapi3-ts'
+import {objectUtil} from './objectUtil'
 
 const cwd = process.cwd()
 
@@ -15,20 +17,49 @@ function doClear(outDir: string) {
   }))
 }
 
+/**
+ * sort paths and schemas
+ * @param inputFile
+ * @param openAPIObject
+ */
+function sortInput(inputFile: string, openAPIObject: OpenAPIObject) {
+  let orderChanged = false
+  const originPaths = openAPIObject.paths
+  const newPaths = objectUtil.sortByKey(originPaths)
+  if (Object.keys(originPaths).toString() !== Object.keys(newPaths).toString()) {
+    openAPIObject.paths = newPaths
+    orderChanged = true
+  }
+  if (openAPIObject.components?.schemas) {
+    const originModels = openAPIObject.components.schemas
+    const newModels = objectUtil.sortByKey(originModels)
+    if (Object.keys(originModels).toString() !== Object.keys(newModels).toString()) {
+      openAPIObject.components.schemas = newModels
+      orderChanged = true
+    }
+  }
+  if (orderChanged) fileUtil.writeConfig(inputFile, openAPIObject)
+}
+
 async function doGenerate(generatorDirName: string, outDir: string, originInput: string) {
   console.log('\n>>>>> generating code...')
-  const inputConfig = fileUtil.readConfig(cwd, originInput)
-  if (inputConfig.configObj === undefined)
+  // read and check input
+  const input = fileUtil.readConfig(cwd, originInput)
+  const openAPIObject = input.configObj as OpenAPIObject | undefined
+  if (openAPIObject === undefined)
     throw new TypeError(`input file ${originInput}.(yaml|yml|json) not found`)
-  console.log('inputFile: %s', inputConfig.configFile)
+  console.log('inputFile: %s', input.configFile)
+  // read config
   if (!fs.existsSync(generatorDirName)) fs.mkdirSync(generatorDirName)
   const generatorDirPath = `${cwd}/${generatorDirName}`
   const {configFile, configObj} = fileUtil.readConfig(generatorDirPath, 'config')
   const generator = configObj?.['x-generator'] ?? generatorDirName
+  if (generator === 'openapi' || generator === 'openapi-yaml') sortInput(input.configFile, openAPIObject)
   const template = configObj?.['x-template']
   console.log('x-generator: %s, x-template: %o', generator, template)
-  let cmd = `openapi-generator-cli generate -i ${inputConfig.configFile} -o ${outDir} -g ${generator} `
+  let cmd = `openapi-generator-cli generate -i ${input.configFile} -o ${outDir} -g ${generator} `
   if (configObj != undefined) cmd += `-c ${configFile} `
+  // add template related param
   if (template) {
     if (typeof template === 'boolean') {
       let templateRoot = process.env.OPENAPI_TEMPLATE_ROOT || ''
@@ -44,6 +75,7 @@ async function doGenerate(generatorDirName: string, outDir: string, originInput:
       throw TypeError('x-template should be boolean or string')
     }
   }
+  // send generate command to shell
   await runCmd(cmd)
   return generator
 }
