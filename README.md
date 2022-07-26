@@ -1,8 +1,9 @@
 
 # woog
 
-simple wrapper of @openapitools/openapi-generator-cli, with some default configurations.
-woog means Wrapper Of Openapi Generator 
+- simple wrapper of @openapitools/openapi-generator-cli, with some default configurations.
+- woog means Wrapper Of Openapi Generator 
+- if use generator `openapi` or `openapi-yaml`, paths and schemas in input file will be sorted
 
 ## Install
 
