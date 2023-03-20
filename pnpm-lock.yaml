@@ -6,7 +6,7 @@ specifiers:
   '@types/rimraf': 3.0.2
   maven: ^5.0.0
   node-run-cmd: ^1.0.1
-  openapi3-ts: 3.0.2
+  openapi3-ts: 3.2.0
   prettier: 2.8.4
   rimraf: ^4.0.0
   tsup: 6.7.0
@@ -24,7 +24,7 @@ devDependencies:
   '@egoist/prettier-config': 1.0.0
   '@types/node': 18.15.3
   '@types/rimraf': 3.0.2
-  openapi3-ts: 3.0.2
+  openapi3-ts: 3.2.0
   prettier: 2.8.4
   tsup: 6.7.0_typescript@5.0.2
   typescript: 5.0.2
@@ -977,10 +977,10 @@ packages:
       mimic-fn: 2.1.0
     dev: true
 
-  /openapi3-ts/3.0.2:
-    resolution: {integrity: sha512-KF/06OkQPFSr9A+oadYYC3cIj8TZlzonREkQYFqx8i+wLllAxm6Bp8Fizo3jWXeIxZj/7V5LKtuNN/GxueWtcw==}
+  /openapi3-ts/3.2.0:
+    resolution: {integrity: sha512-/ykNWRV5Qs0Nwq7Pc0nJ78fgILvOT/60OxEmB3v7yQ8a8Bwcm43D4diaYazG/KBn6czA+52XYy931WFLMCUeSg==}
     dependencies:
-      yaml: 2.1.1
+      yaml: 2.2.1
     dev: true
 
   /path-is-absolute/1.0.1:
@@ -1382,3 +1382,9 @@ packages:
   /yaml/2.1.1:
     resolution: {integrity: sha512-o96x3OPo8GjWeSLF+wOAbrPfhFOGY0W00GNaxCDv+9hkcDJEnev1yh8S7pgHF0ik6zc8sQLuL8hjHjJULZp8bw==}
     engines: {node: '>= 14'}
+    dev: false
+
+  /yaml/2.2.1:
+    resolution: {integrity: sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==}
+    engines: {node: '>= 14'}
+    dev: true
