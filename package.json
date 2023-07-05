@@ -30,7 +30,7 @@
     "@types/node": "18.15.3",
     "@types/rimraf": "3.0.2",
     "openapi3-ts": "4.0.4",
-    "prettier": "2.8.7",
+    "prettier": "3.0.0",
     "tsup": "6.7.0",
     "typescript": "5.0.4",
     "vitest": "0.23.4"
