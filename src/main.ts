@@ -1,20 +1,17 @@
 import * as fs from 'fs'
-import rimraf from 'rimraf'
+import {rimraf} from 'rimraf'
 import mvn from './mvn'
 import {runCmd} from './runCmd'
 import {templateMap} from './templateMap'
 import {fileUtil} from './fileUtil'
-import {OpenAPIObject} from 'openapi3-ts'
 import {objectUtil} from './objectUtil'
+import {OpenAPIObject} from 'openapi3-ts/oas30'
 
 const cwd = process.cwd()
 
 function doClear(outDir: string) {
   console.log('\n>>>>> clearing output dir [%s]...', outDir)
-  return new Promise((resolve, reject) => rimraf(`${outDir}/*`, r => {
-    if (r) reject(r)
-    else resolve(null)
-  }))
+  return rimraf(`${outDir}/*`)
 }
 
 /**
