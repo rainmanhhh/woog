@@ -1055,7 +1055,7 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.0.5
-      yaml: 2.2.1
+      yaml: 2.3.1
     dev: true
 
   /postcss@8.4.14:
