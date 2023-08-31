@@ -14,7 +14,7 @@ export interface WoogConfig {
 
 export const fileUtil = {
   async exists(path: string) {
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<boolean>(resolve => {
       fs.access(path, (err) => resolve(!err))
     })
   },
