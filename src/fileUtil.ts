@@ -1,6 +1,17 @@
 import fs from 'fs'
 import yaml from 'yaml'
 
+export interface WoogConfig {
+  /**
+   * eg.: "/foo/bar/openapi.yml"
+   */
+  configFile: string
+  /**
+   * should be OpenAPIObject
+   */
+  configObj?: Record<string, any>
+}
+
 export const fileUtil = {
   read(path: string) {
     if (fs.existsSync(path)) return fs.readFileSync(path).toString()
@@ -16,10 +27,12 @@ export const fileUtil = {
     if (s === undefined) return undefined
     else return JSON.parse(s)
   },
-  readConfig(generatorDirPath: string, fileName: string): {
-    configFile: string
-    configObj?: Record<string, any>
-  } {
+  /**
+   *
+   * @param generatorDirPath
+   * @param fileName
+   */
+  readConfig(generatorDirPath: string, fileName: string): WoogConfig {
     let configFile: string = generatorDirPath + '/' + fileName
     let configObj: object | undefined
     if (configFile.endsWith('.yaml') || configFile.endsWith('.yml')) {
