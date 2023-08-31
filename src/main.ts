@@ -41,20 +41,22 @@ function sortInput(inputFile: string, openAPIObject: OpenAPIObject) {
 async function doGenerate(generatorDirName: string, outDir: string, originInput: string) {
   console.log('\n>>>>> generating code...')
   // read and check input
-  const input = fileUtil.readConfig(cwd, originInput)
+  const input = await fileUtil.readConfig(cwd, originInput)
   const openAPIObject = input.configObj as OpenAPIObject | undefined
   if (openAPIObject === undefined)
     throw new TypeError(`input file ${originInput}.(yaml|yml|json) not found`)
-  console.log('inputFile: %s', input.configFile)
+  const inputFile = input.configFile
+  console.log('inputFile: %s', inputFile)
   // read config
   if (!fs.existsSync(generatorDirName)) fs.mkdirSync(generatorDirName)
   const generatorDirPath = `${cwd}/${generatorDirName}`
-  const {configFile, configObj} = fileUtil.readConfig(generatorDirPath, 'config')
+  const {configFile, configObj} = await fileUtil.readConfig(generatorDirPath, 'config')
   const generator = configObj?.['x-generator'] ?? generatorDirName
-  if (generator === 'openapi' || generator === 'openapi-yaml') sortInput(input.configFile, openAPIObject)
+  if ((generator === 'openapi' || generator === 'openapi-yaml') && !(originInput.startsWith('http://') || originInput.startsWith('https://')))
+    sortInput(inputFile, openAPIObject)
   const template = configObj?.['x-template']
   console.log('x-generator: %s, x-template: %o', generator, template)
-  let cmd = `openapi-generator-cli generate -i ${input.configFile} -o ${outDir} -g ${generator} `
+  let cmd = `openapi-generator-cli generate -i ${inputFile} -o ${outDir} -g ${generator} `
   if (configObj != undefined) cmd += `-c ${configFile} `
   // add template related param
   if (template) {

@@ -13,26 +13,36 @@ export interface WoogConfig {
 }
 
 export const fileUtil = {
-  read(path: string) {
-    if (fs.existsSync(path)) return fs.readFileSync(path).toString()
+  async read(path: string, encoding: BufferEncoding = 'utf-8') {
+    return new Promise<string | undefined>((resolve, reject) => {
+      fs.stat(path, (checkErr, stats) => {
+        if (checkErr) reject(checkErr)
+        else {
+          if (!stats.isFile()) resolve(undefined)
+          else fs.readFile(path, (readErr, data) => {
+            if (readErr) reject(readErr)
+            resolve(data.toString(encoding))
+          })
+        }
+      })
+    })
+  },
+  async readYaml(path: string) {
+    const s = await fileUtil.read(path)
+    if (s) return yaml.parse(s)
     else return undefined
   },
-  readYaml(path: string) {
-    const s = fileUtil.read(path)
-    if (s === undefined) return undefined
-    else return yaml.parse(s)
-  },
-  readJson(path: string) {
-    const s = fileUtil.read(path)
-    if (s === undefined) return undefined
-    else return JSON.parse(s)
+  async readJson(path: string) {
+    const s = await fileUtil.read(path)
+    if (s) return JSON.parse(s)
+    else return undefined
   },
   /**
    *
    * @param generatorDirPath
    * @param fileName
    */
-  readConfig(generatorDirPath: string, fileName: string): WoogConfig {
+  async readConfig(generatorDirPath: string, fileName: string): Promise<WoogConfig> {
     let configFile: string = generatorDirPath + '/' + fileName
     let configObj: object | undefined
     if (configFile.endsWith('.yaml') || configFile.endsWith('.yml')) {
