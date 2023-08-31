@@ -37,6 +37,7 @@ export const fileUtil = {
     let configFile = ''
     let configText = ''
     if (inputFile.startsWith('http://') || inputFile.startsWith('https://')) {
+      configFile = inputFile
       const res = await fetch(inputFile)
       configText = await res.text()
     } else {
@@ -48,7 +49,6 @@ export const fileUtil = {
       }
       configText = await fileUtil.read(configFile)
     }
-    console.debug('configText: ', configText)
     let configObj: object | undefined
     if (configText) {
       try {
