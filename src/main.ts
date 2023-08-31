@@ -56,7 +56,7 @@ async function doGenerate(generatorDirName: string, outDir: string, originInput:
     sortInput(inputFile, openAPIObject)
   const template = configObj?.['x-template']
   console.log('x-generator: %s, x-template: %o', generator, template)
-  let cmd = `openapi-generator-cli generate -i ${inputFile} -o ${outDir} -g ${generator} `
+  let cmd = `openapi-generator-cli generate -i "${inputFile}" -o ${outDir} -g ${generator} `
   if (configObj != undefined) cmd += `-c ${configFile} `
   // add template related param
   if (template) {
