@@ -11,7 +11,7 @@ const cwd = process.cwd()
 
 function doClear(outDir: string) {
   console.log('\n>>>>> clearing output dir [%s]...', outDir)
-  return rimraf(`${outDir}/*`)
+  return rimraf(`${outDir}/*`, {glob: true})
 }
 
 /**

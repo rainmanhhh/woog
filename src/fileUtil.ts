@@ -13,53 +13,50 @@ export interface WoogConfig {
 }
 
 export const fileUtil = {
+  async exists(path: string) {
+    return new Promise<boolean>((resolve, reject) => {
+      fs.access(path, (err) => resolve(!err))
+    })
+  },
   async read(path: string, encoding: BufferEncoding = 'utf-8') {
-    return new Promise<string | undefined>((resolve, reject) => {
-      fs.stat(path, (checkErr, stats) => {
-        if (checkErr) reject(checkErr)
-        else {
-          if (!stats.isFile()) resolve(undefined)
-          else fs.readFile(path, (readErr, data) => {
-            if (readErr) reject(readErr)
-            resolve(data.toString(encoding))
-          })
-        }
+    const exists = await fileUtil.exists(path)
+    if (!exists) return ''
+    return new Promise<string>((resolve, reject) => {
+      fs.readFile(path, (err, data) => {
+        if (err) reject(err)
+        resolve(data.toString(encoding))
       })
     })
   },
-  async readYaml(path: string) {
-    const s = await fileUtil.read(path)
-    if (s) return yaml.parse(s)
-    else return undefined
-  },
-  async readJson(path: string) {
-    const s = await fileUtil.read(path)
-    if (s) return JSON.parse(s)
-    else return undefined
-  },
   /**
    *
-   * @param generatorDirPath
-   * @param fileName
+   * @param configDir path of config dir. if reading config for generator, it should be generator dir
+   * @param inputFile path of config file. could be local file path or url
    */
-  async readConfig(generatorDirPath: string, fileName: string): Promise<WoogConfig> {
-    let configFile: string = generatorDirPath + '/' + fileName
-    let configObj: object | undefined
-    if (configFile.endsWith('.yaml') || configFile.endsWith('.yml')) {
-      configObj = fileUtil.readYaml(configFile)
-    } else if (configFile.endsWith('.json')) {
-      configObj = fileUtil.readJson(configFile)
+  async readConfig(configDir: string, inputFile: string): Promise<WoogConfig> {
+    let configFile = ''
+    let configText = ''
+    if (inputFile.startsWith('http://') || inputFile.startsWith('https://')) {
+      const res = await fetch(inputFile)
+      configText = await res.text()
     } else {
-      configFile = generatorDirPath + '/' + fileName + '.yaml'
-      configObj = fileUtil.readYaml(configFile)
-      if (configObj === undefined) {
-        configFile = generatorDirPath + '/' + fileName + '.yml'
-        configObj = fileUtil.readYaml(configFile)
+      configFile = configDir + '/' + inputFile
+      if (!(configFile.endsWith('yaml') || configFile.endsWith('yml') || configFile.endsWith('json'))) {
+        if (await fileUtil.exists(configFile + '.yaml')) configFile += '.yaml'
+        else if (await fileUtil.exists(configFile + '.yml')) configFile += '.yml'
+        else if (await fileUtil.exists(configFile + '.json')) configFile += '.json'
       }
-      if (configObj === undefined) {
-        configFile = generatorDirPath + '/' + fileName + '.json'
-        configObj = fileUtil.readJson(configFile)
+      configText = await fileUtil.read(configFile)
+    }
+    console.debug('configText: ', configText)
+    let configObj: object | undefined
+    if (configText) {
+      try {
+        configObj = JSON.parse(configText)
+      } catch (e) {
+        console.debug('configText is not json')
       }
+      configObj = yaml.parse(configText)
     }
     return {configFile, configObj}
   },
