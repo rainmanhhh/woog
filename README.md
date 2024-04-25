@@ -47,7 +47,7 @@ you can put optional extra parameters in the config file:
       3. `jaxrs-cxf` -> `JavaJaxRS`
       4. `jaxrs-cxf-cdi` -> `JavaJaxRS`
 ## Note
-- use `openapi-generator-cli version-manager` to switch openapi-generator-cli version
+- use `openapi-generator-cli version-manager list` to switch openapi-generator-cli version(if download too slow, you can manually copy org.openapitools:openapi-generator-cli:<version>.jar to `<npm prefix dir>/node_modules/@openapitools/openapi-generator-cli/versions/`, remember to rename it as format `<version>.jar`, like `6.0.0.jar`)
 - use `openapi-generator-cli list` to get available generator names
 - use `openapi-generator-cli config-help -g <generatorName>` to get generator config schema  
 
