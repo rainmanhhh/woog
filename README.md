@@ -35,7 +35,7 @@ you can put optional extra parameters in the config file:
 
 - x-template
   
-    if you want to use custom templates, set your template root dir to env `OPENAPI_TEMPLATE_ROOT`, and add
+    if you want to use custom templates, set your template root dir to env `OPENAPI_TEMPLATE_ROOT`(eg. `D:\workspace\github\openapi-generator\modules\openapi-generator\src\main\resources`), and add
     parameter `x-template` to config file.
 
     * `true` means use `OPENAPI_TEMPLATE_ROOT`/`generatorName` as template dir
