@@ -29,8 +29,8 @@ devDependencies:
     specifier: 3.0.2
     version: 3.0.2
   openapi3-ts:
-    specifier: 4.1.2
-    version: 4.1.2
+    specifier: 4.4.0
+    version: 4.4.0
   prettier:
     specifier: 3.0.0
     version: 3.0.0
@@ -991,10 +991,10 @@ packages:
       mimic-fn: 2.1.0
     dev: true
 
-  /openapi3-ts@4.1.2:
-    resolution: {integrity: sha512-B7gOkwsYMZO7BZXwJzXCuVagym2xhqsrilVvV0dnq2Di4+iLUXKVX9gOK23ZqaAHZOwABXN0QTdW8QnkUTX6DA==}
+  /openapi3-ts@4.4.0:
+    resolution: {integrity: sha512-9asTNB9IkKEzWMcHmVZE7Ts3kC9G7AFHfs8i7caD8HbI76gEjdkId4z/AkP83xdZsH7PLAnnbl47qZkXuxpArw==}
     dependencies:
-      yaml: 2.3.2
+      yaml: 2.5.0
     dev: true
 
   /path-is-absolute@1.0.1:
@@ -1391,3 +1391,9 @@ packages:
   /yaml@2.3.2:
     resolution: {integrity: sha512-N/lyzTPaJasoDmfV7YTrYCI0G/3ivm/9wdG0aHuheKowWQwGTsK0Eoiw6utmzAnI6pkJa0DUVygvp3spqqEKXg==}
     engines: {node: '>= 14'}
+
+  /yaml@2.5.0:
+    resolution: {integrity: sha512-2wWLbGbYDiSqqIKoPjar3MPgB94ErzCtrNE1FdqGuaO0pi2JGjmE8aW8TDZwzU7vuxcGRdL/4gPQwQ7hD5AMSw==}
+    engines: {node: '>= 14'}
+    hasBin: true
+    dev: true
